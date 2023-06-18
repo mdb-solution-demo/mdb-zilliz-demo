@@ -1,0 +1,10 @@
+towhee
+pymilvus
+pymongo
+uvicorn
+fastapi
+python-multipart
+opencv-python
+torch
+torchvision
+transformers
