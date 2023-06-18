@@ -105,7 +105,7 @@ const Setting = (props: any) => {
       },
       customSlider: {
         color: baseColor,
-        marginBottom: "30px",
+        marginBottom: "10px",
       },
       thumb: {
         width: "16px",
@@ -349,7 +349,7 @@ const Setting = (props: any) => {
         }}
       />
 
-      <SeperatLine title={`IMAGE SET Config`} style={{ marginTop: "50px" }} />
+      <SeperatLine title={`IMAGE SET Config`} style={{ marginTop: "10px" }} />
       <div className={classes.imageSet}>
         <div className={classes.counts}>
           <p style={{ color: loading ? baseColor : "#fff" }}>{setText}</p>
