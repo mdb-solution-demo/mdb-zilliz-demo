@@ -6,7 +6,7 @@ The system workflow is as below:
 
 <img src="workflow.png" width = "450" height = "300" alt="arch" align=center />
 
-## Data Source
+<!-- ## Data Source
 
 There are two open source datasets ([coco-images.zip](https://github.com/milvus-io/bootcamp/releases/download/v2.0.2/coco-images.zip) and [PASCAL_VOC.zip](https://github.com/milvus-io/bootcamp/releases/download/v2.0.2/PASCAL_VOC.zip)) we can download and use them, which are the subset from COCO and PASCAL, for example we can download it:
 
@@ -77,4 +77,4 @@ $ cd ..
 # step3: build all-in-one image
 $ docker build -t milvusbootcamp/one-step-img-search:2.1.0 . -f docker/Dockerfile# mdb-zilliz-demo
 # mdb-zilliz-demo
-# mdb-zilliz-demo
+# mdb-zilliz-demo -->
