@@ -234,11 +234,11 @@ const Setting = (props: any) => {
   const uploadImgPath = () => {
     setLoading(true);
 
-    if (inputs.trim() === '') {
+    if (inputs.trim() === "") {
       setInputs("/images");
     }
 
-    train({ File: (inputs || "/images") }).then((res: any) => {
+    train({ File: inputs || "/images" }).then((res: any) => {
       if (res.status === 200) {
         setTimeout(() => {
           setInputs("");
@@ -276,15 +276,80 @@ const Setting = (props: any) => {
     <div className={classes.setting}>
       <div className={classes.header}>
         <img src={Logo} width="150px" alt="logo" />
-        <p>Image Search Demo [<a href="/console" style={{ color: "gold" }} target="_blank">console</a>]</p>
+        <h3>
+          MongoDB & Zilliz Integration Search Demo
+          {/* [
+          <a href="/console" style={{ color: "gold" }} target="_blank">
+            console
+          </a>
+          ] */}
+        </h3>
       </div>
-      <div className={classes.configHead}>
+      <SeperatLine title={`Text To Search`} style={{ marginBottom: "20px" }} />
+
+      <SeperatLine title={`IMAGE To Search`} style={{ marginBottom: "20px" }} />
+      <div className={classes.upload}>
+        {image ? (
+          <div className={classes.benchImage}>
+            <img
+              ref={benchImage}
+              className={classes.benchImage}
+              src={image}
+              alt="..."
+            />
+            <Fab
+              color="primary"
+              aria-label="add"
+              size="small"
+              classes={{ root: classes.customDeleteFab }}
+            >
+              <CloseIcon
+                onClick={() => {
+                  setImage();
+                  setImages([]);
+                }}
+                classes={{ root: classes.customDelete }}
+              />
+            </Fab>
+          </div>
+        ) : (
+          <DropzoneArea
+            acceptedFiles={["image/*"]}
+            filesLimit={1}
+            dropzoneText={`click to upload / drag a image here`}
+            onDrop={uploadImg}
+            dropzoneClass={classes.dropzoneContainer}
+            showPreviewsInDropzone={false}
+            dropzoneParagraphClass={classes.dropzoneText}
+            // maxFileSize={} bit
+          />
+        )}
+      </div>
+
+      {/* <div className={classes.configHead}>
         <h4 className={classes.config}>Config</h4>
         <h4 className={classes.clear} onClick={clear}>
           CLEAR ALL
         </h4>
+      </div> */}
+      <SeperatLine title={`TOP K(1－100)`} style={{ marginTop: "20px" }} />
+      <div className={classes.counts}>
+        <p>{`show top ${topK} results`}</p>
       </div>
-      <SeperatLine title={`IMAGE SET`} style={{ marginBottom: "20px" }} />
+      <Slider
+        min={1}
+        max={100}
+        value={topK}
+        onChange={onTopKChange}
+        classes={{
+          root: classes.customSlider,
+          track: classes.track,
+          rail: classes.track,
+          thumb: classes.thumb,
+        }}
+      />
+
+      <SeperatLine title={`IMAGE SET Config`} style={{ marginTop: "50px" }} />
       <div className={classes.imageSet}>
         <div className={classes.counts}>
           <p style={{ color: loading ? baseColor : "#fff" }}>{setText}</p>
@@ -330,60 +395,6 @@ const Setting = (props: any) => {
             />
           </Fab>
         </div>
-        <SeperatLine title={`TOP K(1－100)`} style={{ marginBottom: "20px" }} />
-        <div className={classes.counts}>
-          <p>{`show top ${topK} results`}</p>
-        </div>
-        <Slider
-          min={1}
-          max={100}
-          value={topK}
-          onChange={onTopKChange}
-          classes={{
-            root: classes.customSlider,
-            track: classes.track,
-            rail: classes.track,
-            thumb: classes.thumb,
-          }}
-        />
-      </div>
-      <SeperatLine title={`ORIGINAL IMAGE`} style={{ marginBottom: "50px" }} />
-      <div className={classes.upload}>
-        {image ? (
-          <div className={classes.benchImage}>
-            <img
-              ref={benchImage}
-              className={classes.benchImage}
-              src={image}
-              alt="..."
-            />
-            <Fab
-              color="primary"
-              aria-label="add"
-              size="small"
-              classes={{ root: classes.customDeleteFab }}
-            >
-              <CloseIcon
-                onClick={() => {
-                  setImage();
-                  setImages([]);
-                }}
-                classes={{ root: classes.customDelete }}
-              />
-            </Fab>
-          </div>
-        ) : (
-          <DropzoneArea
-            acceptedFiles={["image/*"]}
-            filesLimit={1}
-            dropzoneText={`click to upload / drag a image here`}
-            onDrop={uploadImg}
-            dropzoneClass={classes.dropzoneContainer}
-            showPreviewsInDropzone={false}
-            dropzoneParagraphClass={classes.dropzoneText}
-            // maxFileSize={} bit
-          />
-        )}
       </div>
     </div>
   );
