@@ -1,6 +1,6 @@
 # Reverse Image Search with One Step
 
-We will build a reverse image search system with **[Towhee](https://towhee.io/)** and **[Milvus](https://milvus.io/)**, Towhee pipeline is used to extract feature vectors from images, and Milvus will store and search the vectors. If you use the docker deployment method, then you only need to run one command!
+We will build a reverse image search system with **[Towhee](https://towhee.io/)** and **[Milvus](https://milvus.io/)** and **[MongoDB Atlas](http://cloud.mongodb.com)**, Towhee pipeline is used to extract feature vectors from images, and Milvus will store and search the vectors, Mongodb will store all SKU information. If you use the docker deployment method, then you only need to run one command!
 
 The system workflow is as below:
 
