@@ -25,7 +25,7 @@ const MetaInfo:React.FC<{[key:string]:string}> = ({meta})=>{
     <p className={classes.tipWrapper}>
       {
         Object.entries(meta).map(([key,value])=> (
-          <span>{`${key}: ${value}`}</span>
+          <span key={key}>{`${key}: ${value}`}</span>
         ))
       }
     </p>
