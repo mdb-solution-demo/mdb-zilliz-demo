@@ -4,6 +4,12 @@ import * as URL from "../utils/Endpoints";
 
 const axiosInstance = axios.create();
 
+const newAxios = axios.create({
+  headers: {
+    'Content-Type': 'application/x-www-form-urlencoded'
+  }
+})
+
 export const queryContext = createContext<any>({});
 const Provider = queryContext.Provider;
 
@@ -33,6 +39,14 @@ const QueryProvider: FC<{ children: ReactNode }> = ({ children }) => {
     return await axiosInstance.post(url).catch(errorParser);
   };
 
+  const searchText = async (params: {
+    text:string,
+    topK: number
+  }) => {
+    const url = URL.SearchText;
+    return await axiosInstance.post(`${url}?text=${params.text}&topk=${params.topK}`).catch(errorParser);
+  };
+
   return (
     <Provider
       value={{
@@ -40,7 +54,8 @@ const QueryProvider: FC<{ children: ReactNode }> = ({ children }) => {
         count,
         search,
         clearAll,
-        train
+        train,
+        searchText
       }}
     >
       {children}

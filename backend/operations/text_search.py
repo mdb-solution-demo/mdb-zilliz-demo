@@ -1,14 +1,14 @@
 from towhee import pipe, ops
-from config import MILVUS_HOST, MILVUS_PORT, MILVUS_COLLECTION, MONGO_URI, MONGO_DB, MONGO_COLLECTION, THRESHOLD, TOP_K, DEVICE
+from config import MILVUS_HOST, MILVUS_PORT, MILVUS_COLLECTION, MONGO_URI, MONGO_DB, MONGO_COLLECTION, THRESHOLD, DEVICE
 
 
-def do_text_search(img_path):
+def do_text_search(img_path, topk):
     text_search_pipe = (
         pipe.input('query')
             .map('query', 'emb', ops.image_text_embedding.clip(model_name='clip_vit_base_patch32', modality='text', device=DEVICE))
             .map('emb', 'emb', ops.towhee.np_normalize())
             .map('emb', 'ret',  ops.ann_search.milvus_client(
-                host=MILVUS_HOST, port=MILVUS_PORT, limit=TOP_K, collection_name=MILVUS_COLLECTION, output_fields=['path']
+                host=MILVUS_HOST, port=MILVUS_PORT, limit=topk, collection_name=MILVUS_COLLECTION, output_fields=['path']
             ))
             .flat_map('ret', 'ret', lambda x: x)
             .map('ret', 'ret_id', lambda x: x[0])

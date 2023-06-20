@@ -3,7 +3,7 @@ import csv
 import pandas as pd
 from towhee import pipe, ops
 
-from config import MILVUS_HOST, MILVUS_PORT, MILVUS_COLLECTION, MONGO_URI, MONGO_DB, MONGO_COLLECTION, THRESHOLD, TOP_K, DEVICE
+from config import MILVUS_HOST, MILVUS_PORT, MILVUS_COLLECTION, MONGO_URI, MONGO_DB, MONGO_COLLECTION, THRESHOLD, DEVICE
 
 
 def prepare_collection(csv_path, root_path, num):
