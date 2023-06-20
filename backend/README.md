@@ -9,11 +9,11 @@ Before running the demo, make sure you have the following service started:
 - MongoDB: Install and configure MongoDB, refer to [MongoDB docs](https://www.mongodb.com/docs/manual/administration/install-community/).
 
 
-## Getting Started
+## Start Server
 To get started with the demo, follow the steps below:
-1. Clone the repository and enter the project directory.
+1. Clone the repository and enter the `backend` directory.
     ```bash
-    git clone https://github.com/Chiiizzzy/zilliz-mongodb-demo.git
+    git clone https://github.com/wxywb/mdb-zilliz-demo.git
     ```
 
 2. Install the required Python packages
@@ -27,15 +27,34 @@ To get started with the demo, follow the steps below:
 
 5. Start the server
     ```bash
-    python main.py --csv <path/to/csv> --root <root/path/of/images> --num <number_of_images> --purge
+    python main.py --host <your/host> --port <your/port> --csv <path/to/csv> --root <root/path/of/images> --num <number_of_images> --purge
     ```
     Replace the values inside `<>`.
+    - *host*: str, the host address.
+    - *port*: int, the port to access the service.
     - *csv*: str, the path to the csv.
     - *root*: str, the root path of the images.
     - *num*: int, the number of images to insert into Milvus and MongoDb collection.
     - *purge*: no value, once clarified, will clear existing collection.
 
 ## User Interface
+
+### Frontend
+
+Please follow the following steps to start frontend and query;
+
+1. Enter the `frontend` directory and install necessary packages
+    ```bash
+    yarn install
+    ```
+
+2. Start frontend page
+    ```bash
+    yarn start
+    ```
+
+Then we can upload images or enter textual description to search.
+
 
 ### Image Search
 **Endpoint:** `POST /img/seach`
