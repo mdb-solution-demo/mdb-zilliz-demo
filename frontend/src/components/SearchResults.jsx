@@ -38,8 +38,7 @@ const SearchResults = props => {
     const [currentImage, setCurrentImage] = useState(0);
     const [viewerIsOpen, setViewerIsOpen] = useState(false);
     const photos = images.map(img => {
-      const [src,meta] = img
-       
+      const [src,meta] = img;
         return {
             src: `http://${src}`,
             meta

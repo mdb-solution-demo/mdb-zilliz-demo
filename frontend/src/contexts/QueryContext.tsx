@@ -44,9 +44,7 @@ const QueryProvider: FC<{ children: ReactNode }> = ({ children }) => {
     topK: number
   }) => {
     const url = URL.SearchText;
-    return await axiosInstance.post(`${url}?text=${params.text}`, {
-      topk: params.topK
-    }).catch(errorParser);
+    return await axiosInstance.post(`${url}?text=${params.text}&topk=${params.topK}`).catch(errorParser);
   };
 
   return (
