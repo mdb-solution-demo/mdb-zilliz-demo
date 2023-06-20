@@ -1,7 +1,36 @@
-import React, { useState } from "react";
+import React, { useMemo, useState } from "react";
 import { createStyles, makeStyles } from "@material-ui/core/styles";
 import { baseColor } from "../utils/color";
 import useMediaQuery from "@material-ui/core/useMediaQuery";
+import { Tooltip } from "@material-ui/core";
+
+
+const MetaInfo:React.FC<{[key:string]:string}> = ({meta})=>{
+   const useStyles = makeStyles((theme) =>
+    createStyles({
+      tipWrapper: {
+        display: "flex",
+        flexDirection:"column",
+        gap: '4px',
+        
+        '&>span': {
+          fontSize: "13px",
+          lineHeight: "17px"
+        }
+      }
+    })
+  );
+  const classes = useStyles({});
+  return (
+    <p className={classes.tipWrapper}>
+      {
+        Object.entries(meta).map(([key,value])=> (
+          <span>{`${key}: ${value}`}</span>
+        ))
+      }
+    </p>
+  )
+}
 
 const placeHolderImges = new Array(20).fill({});
 const Gallary = (props: any) => {
@@ -30,6 +59,10 @@ const Gallary = (props: any) => {
         fontSize: "50px",
         width: isMobile ? "100%" : "auto",
         height: isMobile ? "0" : "auto",
+
+        '&:hover': {
+          borderColor:baseColor        
+        }
       },
       child: {
         width: "100%",
@@ -73,31 +106,21 @@ const Gallary = (props: any) => {
   const onMouseLeave = () => {
     setHovered(null);
   };
+
+  
   return (
     <div className={classes.root}>
       {images.length > 0
         ? images.map((img: any, index: number) => {
-            const { src, distance } = img;
-            const isHovered = hovered === src;
+            const {src, meta} = img;
             return (
-              <div
-                className={classes.imageContainer}
-                onClick={() => {
-                  onClick(index);
-                }}
-                onMouseOver={onMouseOver}
-                onMouseLeave={onMouseLeave}
-                key={src}
-                data-src={src}
-                style={{
-                  border: `solid 2px ${isHovered ? baseColor : "transparent"}`,
-                }}
-              >
-                <img src={src} className={classes.child} alt="" />
-                {isHovered && (
-                  <p className={classes.distant}>{distance.toFixed(6)}</p>
-                )}
-              </div>
+              <Tooltip title={<MetaInfo meta={meta} />} placement="right" key={src}>
+                <div
+                  className={classes.imageContainer}
+                >
+                  <img src={src} className={classes.child} alt=""  />
+                </div>
+              </Tooltip>
             );
           })
         : placeHolderImges.map((item: any, index: number) => (

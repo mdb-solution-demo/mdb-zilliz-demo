@@ -25,10 +25,12 @@ const useStyles = makeStyles(theme =>
         subTitle: {
             fontSize: "15px",
             color: "#F1F1F1",
-            marginBottom: "１0px !important"
+            marginBottom: "10px !important"
         }
     })
 );
+
+
 
 const SearchResults = props => {
     const classes = useStyles({});
@@ -36,9 +38,11 @@ const SearchResults = props => {
     const [currentImage, setCurrentImage] = useState(0);
     const [viewerIsOpen, setViewerIsOpen] = useState(false);
     const photos = images.map(img => {
+      const [src,meta] = img
+       
         return {
-            src: `${GetImageUrl}?image_path=${img[0]}`,
-            distance: img[1]
+            src: `http://${src}`,
+            meta
         };
     });
 
