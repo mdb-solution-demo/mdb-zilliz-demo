@@ -3,7 +3,6 @@ import os
 ############### Milvus Configuration ###############
 MILVUS_HOST = os.getenv('MILVUS_HOST', '127.0.0.1')
 MILVUS_PORT = os.getenv('MILVUS_PORT', '19530')
-TOP_K = int(os.getenv('TOP_K', '5'))
 MILVUS_COLLECTION = os.getenv('COLLECTION_NAME', 'fashion')
 INDEX_TYPE = os.getenv('INDEX_TYPE', 'IVF_FLAT')
 METRIC_TYPE = os.getenv('METRIC_TYPE', 'L2')

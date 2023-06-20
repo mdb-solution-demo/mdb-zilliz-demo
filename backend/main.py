@@ -11,7 +11,7 @@ from fastapi.responses import FileResponse
 from fastapi.staticfiles import StaticFiles
 from pydantic import BaseModel
 
-from config import UPLOAD_PATH, TOP_K, DEVICE
+from config import UPLOAD_PATH, DEVICE
 from log import LOGGER
 from operations.image_search import do_image_search
 from operations.text_search import do_text_search
@@ -43,10 +43,9 @@ def path_to_url(path):
 
 
 @app.post('/img/search')
-async def image_search(image: UploadFile = File(...), topk: int = Form(TOP_K)):
+async def image_search(image: UploadFile, topk: int):
     try:
         content = await image.read()
-        print('read pic succ')
         img_path = os.path.join(UPLOAD_PATH, image.filename)
         with open(img_path, "wb+") as f:
             f.write(content)
@@ -61,7 +60,7 @@ async def image_search(image: UploadFile = File(...), topk: int = Form(TOP_K)):
 
 
 @app.post('/path/search')
-async def path_search(path: str, topk: int = Form(TOP_K)):
+async def path_search(path: str, topk: int):
     try:
         res = do_image_search(path, topk)
         for i in range(len(res)):
@@ -74,12 +73,11 @@ async def path_search(path: str, topk: int = Form(TOP_K)):
 
 
 @app.post('/text/search')
-async def text_search(text: str, topk: int = Form(TOP_K)):
+async def text_search(text: str, topk: int):
     try:
         res = do_text_search(text, topk)
         for i in range(len(res)):
             res[i][0] = path_to_url(res[i][0])
-        print(f"Successfully retrieved {len(res)} similar images!")
         LOGGER.info(f"Successfully retrieved {len(res)} similar images!")
         return res
     except Exception as e:
