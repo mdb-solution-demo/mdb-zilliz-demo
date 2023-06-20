@@ -11,7 +11,7 @@ from fastapi.responses import FileResponse
 from fastapi.staticfiles import StaticFiles
 from pydantic import BaseModel
 
-from config import UPLOAD_PATH, TOP_K
+from config import UPLOAD_PATH, TOP_K, DEVICE
 from log import LOGGER
 from operations.image_search import do_image_search
 from operations.text_search import do_text_search
@@ -24,8 +24,7 @@ if not os.path.exists(UPLOAD_PATH):
     os.makedirs(UPLOAD_PATH)
     LOGGER.info(f"make the dir: {UPLOAD_PATH}")
 
-
-image_root = None 
+IMAGR_ROOT = None
 HOST = None
 PORT = None
 app = FastAPI()
@@ -40,7 +39,8 @@ app.add_middleware(
 
 
 def path_to_url(path):
-    return path.replace(image_root, '{}:{}/images/'.format(HOST, PORT))
+    return path.replace(IMAGR_ROOT, '{}:{}/images/'.format(HOST, PORT))
+
 
 @app.post('/img/search')
 async def image_search(image: UploadFile = File(...), topk: int = Form(TOP_K)):
@@ -50,10 +50,10 @@ async def image_search(image: UploadFile = File(...), topk: int = Form(TOP_K)):
         img_path = os.path.join(UPLOAD_PATH, image.filename)
         with open(img_path, "wb+") as f:
             f.write(content)
-        res = do_image_search(img_path)
+        res = do_image_search(img_path, topk)
         for i in range(len(res)):
-            res[i][0] =  path_to_url(res[i][0])
-        LOGGER.info("Successfully searched similar images!")
+            res[i][0] = path_to_url(res[i][0])
+        LOGGER.info(f"Successfully retrieved {len(res)} similar images!")
         return res
     except Exception as e:
         LOGGER.error(e)
@@ -63,10 +63,10 @@ async def image_search(image: UploadFile = File(...), topk: int = Form(TOP_K)):
 @app.post('/path/search')
 async def path_search(path: str, topk: int = Form(TOP_K)):
     try:
-        res = do_image_search(path)
+        res = do_image_search(path, topk)
         for i in range(len(res)):
-            res[i][0] =  path_to_url(res[i][0])
-        LOGGER.info("Successfully searched similar images!")
+            res[i][0] = path_to_url(res[i][0])
+        LOGGER.info(f"Successfully retrieved {len(res)} similar images!")
         return res
     except Exception as e:
         LOGGER.error(e)
@@ -76,15 +76,16 @@ async def path_search(path: str, topk: int = Form(TOP_K)):
 @app.post('/text/search')
 async def text_search(text: str, topk: int = Form(TOP_K)):
     try:
-        print('topk', topk)
-        res = do_text_search(text)
+        res = do_text_search(text, topk)
         for i in range(len(res)):
-            res[i][0] =  path_to_url(res[i][0])
-        LOGGER.info("Successfully searched similar images!")
+            res[i][0] = path_to_url(res[i][0])
+        print(f"Successfully retrieved {len(res)} similar images!")
+        LOGGER.info(f"Successfully retrieved {len(res)} similar images!")
         return res
     except Exception as e:
         LOGGER.error(e)
         return {'status': False, 'msg': e}, 400
+
 
 @app.get('/data')
 def get_img(image_path):
@@ -96,12 +97,13 @@ def get_img(image_path):
         LOGGER.error(f"Get image error: {e}")
         return {'status': False, 'msg': e}, 400
 
+
 def parse_arguments():
     parser = argparse.ArgumentParser(description='Script description.')
     parser.add_argument('--host', type=str, default='127.0.0.1', help='Host IP address')
     parser.add_argument('--port', type=int, default=5000, help='Port number')
+    parser.add_argument('--root', type=str, default=None, help='Root path for loading images.')
     parser.add_argument('--csv', type=str, required=False, default=None, help='path to sku data.')
-    parser.add_argument('--root', type=str, required=False, default=None, help='Root path for loading images.')
     parser.add_argument('--num', type=int, required=False, default=100, help='Number of insert images.')
     parser.add_argument('--purge', action='store_true', help='whether to clear existing collection.')
     args = parser.parse_args()
@@ -115,8 +117,8 @@ if __name__ == '__main__':
     set_collection(args.purge)
     if args.csv and args.root:
         prepare_collection(args.csv, args.root, args.num)
-        app.mount("/images", StaticFiles(directory=args.root), name="images")
-        image_root = args.root
+    app.mount("/images", StaticFiles(directory=args.root), name="images")
+    IMAGR_ROOT = args.root
     HOST = args.host
     PORT = args.port
     uvicorn.run(app=app, host=HOST, port=PORT)
