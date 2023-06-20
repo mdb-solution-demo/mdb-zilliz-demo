@@ -41,7 +41,7 @@ const App: React.FC = () => {
               fontSize: "40px",
               lineHeight: "50px"
             }}
-          >Loading...</div>
+          >Searching...</div>
         )}
       </div>
     </QueryProvider>
