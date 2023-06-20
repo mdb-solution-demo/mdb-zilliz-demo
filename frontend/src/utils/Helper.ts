@@ -1,10 +1,11 @@
 let timeout: any = '';
-export const delayRunFunc = (params: any, func: Function, time: number) => {
+export const delayRunFunc = ( func: Function, time: number, params?:any) => {
   if (timeout) {
     clearTimeout(timeout);
   }
   timeout = setTimeout(() => {
-    func(params);
+    params? func(params): func()
+    
   }, time);
   const r = () => {
     clearTimeout(timeout);

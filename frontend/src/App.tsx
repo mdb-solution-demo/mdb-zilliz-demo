@@ -34,8 +34,14 @@ const App: React.FC = () => {
               top: "0",
               backgroundColor: "#000",
               opacity: 0.5,
+              color: "#fff",
+              display: "flex",
+              alignItems: "center",
+              justifyContent:"center",
+              fontSize: "40px",
+              lineHeight: "50px"
             }}
-          ></div>
+          >Loading...</div>
         )}
       </div>
     </QueryProvider>
