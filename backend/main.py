@@ -43,7 +43,7 @@ def path_to_url(path):
 
 
 @app.post('/img/search')
-async def image_search(image: UploadFile, topk: int):
+async def image_search(image: UploadFile = File(...), topk: int = Form()):
     try:
         content = await image.read()
         img_path = os.path.join(UPLOAD_PATH, image.filename)
