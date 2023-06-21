@@ -1,7 +1,7 @@
 from towhee import pipe, ops
 from config import MILVUS_HOST, MILVUS_PORT, MILVUS_COLLECTION, MONGO_URI, MONGO_DB, MONGO_COLLECTION, THRESHOLD, DEVICE
 
-def do_image_search(img_path, topkÍ):
+def do_image_search(img_path, topk):
     image_search_pipe = (
         pipe.input('query')
             .map('query', 'img', ops.image_decode.cv2_rgb())
