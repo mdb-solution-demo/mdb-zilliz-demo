@@ -49,7 +49,7 @@ def do_text_search2(img_path, topk, morequery):
             .flat_map('ret', 'ret', lambda x: x)
             .map('ret', 'ret_id', lambda x: x[0])
  #           .map('ret', 'ret_img', lambda x: x[2])
-            .window_all('ret_id', 'sku', ops.storage.mongo_search(
+            .window_all('ret_id', 'sku', ops.mongodb.mongo_search(
                uri=MONGO_URI, database=MONGO_DB, collection=MONGO_COLLECTION, moreQuery=morequery, schema=['id'], exclude=['_id']
             ))
  #           .map('sku', 'ret_img', lambda x: x[0])

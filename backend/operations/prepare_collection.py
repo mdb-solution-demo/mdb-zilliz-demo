@@ -21,7 +21,7 @@ def prepare_collection(csv_path, root_path, num):
     )
 
     sku_pipe = (
-        init_pipe.map('sku', 'insert_id', ops.storage.mongo_insert(uri=MONGO_URI, database=MONGO_DB, collection=MONGO_COLLECTION))
+        init_pipe.map('sku', 'insert_id', ops.mongodb.mongo_insert(uri=MONGO_URI, database=MONGO_DB, collection=MONGO_COLLECTION))
     )
 
     img_pipe = (
